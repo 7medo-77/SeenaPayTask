@@ -5,6 +5,18 @@ import { signupUser } from "@/lib/api/auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { toast } from "react-toastify";
+
 export default function SignupPage() {
 	const router = useRouter();
 	const [formData, setFormData] = useState({
@@ -47,9 +59,11 @@ export default function SignupPage() {
 			});
 
 			if (response.success && response.user) {
+				toast.success("Account created successfully! Redirecting to login...");
 				router.push("/login");
 			} else {
 				setError(response.error || "Signup failed");
+				toast.error(response.error || "Signup failed");
 			}
 		} catch (err) {
 			setError("An unexpected error occurred");
@@ -60,115 +74,93 @@ export default function SignupPage() {
 	};
 
 	return (
-		<div className="flex min-h-screen items-center justify-center bg-gray-50">
-			<div className="w-full max-w-md space-y-8 p-6 bg-white rounded-lg shadow-md">
-				<div>
-					<h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+		<div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+			<Card className="w-full max-w-md">
+				<CardHeader>
+					<CardTitle className="text-2xl font-bold tracking-tight text-center">
 						Create your account
-					</h2>
-				</div>
-
-				{error && (
-					<div className="p-3 bg-red-50 text-red-700 border border-red-200 rounded-md">
-						{error}
-					</div>
-				)}
-
-				<form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-					<div className="space-y-4 rounded-md shadow-sm">
-						<div>
-							<label
-								htmlFor="name"
-								className="block text-sm font-medium text-gray-700"
-							>
-								Name
-							</label>
-							<input
+					</CardTitle>
+					<CardDescription className="text-center">
+						Enter your details below to create a new account.
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					{error && (
+						<div className="mb-4 p-3 bg-red-50 text-red-700 border border-red-200 rounded-md">
+							{error}
+						</div>
+					)}
+					<form className="space-y-6" onSubmit={handleSubmit}>
+						<div className="space-y-2">
+							<Label htmlFor="name">Name</Label>
+							<Input
 								id="name"
 								name="name"
 								type="text"
+								placeholder="Your name"
 								value={formData.name}
 								onChange={handleChange}
-								className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none"
 							/>
 						</div>
 
-						<div>
-							<label
-								htmlFor="email"
-								className="block text-sm font-medium text-gray-700"
-							>
-								Email address
-							</label>
-							<input
+						<div className="space-y-2">
+							<Label htmlFor="email">Email address</Label>
+							<Input
 								id="email"
 								name="email"
 								type="email"
+								placeholder="you@example.com"
 								required
 								value={formData.email}
 								onChange={handleChange}
-								className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none"
 							/>
 						</div>
 
-						<div>
-							<label
-								htmlFor="password"
-								className="block text-sm font-medium text-gray-700"
-							>
-								Password
-							</label>
-							<input
+						<div className="space-y-2">
+							<Label htmlFor="password">Password</Label>
+							<Input
 								id="password"
 								name="password"
 								type="password"
+								placeholder="••••••••"
 								required
 								value={formData.password}
 								onChange={handleChange}
-								className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none"
 							/>
 						</div>
 
-						<div>
-							<label
-								htmlFor="confirmPassword"
-								className="block text-sm font-medium text-gray-700"
-							>
-								Confirm Password
-							</label>
-							<input
+						<div className="space-y-2">
+							<Label htmlFor="confirmPassword">Confirm Password</Label>
+							<Input
 								id="confirmPassword"
 								name="confirmPassword"
 								type="password"
+								placeholder="••••••••"
 								required
 								value={formData.confirmPassword}
 								onChange={handleChange}
-								className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none"
 							/>
 						</div>
-					</div>
 
-					<div>
-						<button
+						<Button
 							type="submit"
 							disabled={loading}
-							className="group relative flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-blue-300"
+							className="w-full"
 						>
 							{loading ? "Creating account..." : "Sign up"}
-						</button>
+						</Button>
+					</form>
+					<div className="mt-6 text-sm text-center">
+						Already have an account?{" "}
+						<Link
+							href="/login"
+							className="font-medium text-blue-600 hover:text-blue-500"
+						>
+							Sign in
+						</Link>
 					</div>
-				</form>
-
-				<div className="text-sm text-center mt-4">
-					Already have an account?{" "}
-					<Link
-						href="/login"
-						className="font-medium text-blue-600 hover:text-blue-500"
-					>
-						Sign in
-					</Link>
-				</div>
-			</div>
+				</CardContent>
+			</Card>
 		</div>
 	);
 }
