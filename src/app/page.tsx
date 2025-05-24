@@ -1,8 +1,16 @@
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import backgroundAsset from '@/assets/faded_gallery-OfdOEdGYiuk-unsplash.jpg';
+import getCurrentUserData from "@/utils/getCurrentUserData";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
+	const user = await getCurrentUserData();
+	if (user) {
+		// If user is authenticated, redirect to the home page
+		redirect('/posts');
+	}
+
 	return (
 		<div className="relative min-h-screen flex flex-col items-center justify-center text-white font-[family-name:var(--font-geist-sans)]">
 			{/* Background Image */}
