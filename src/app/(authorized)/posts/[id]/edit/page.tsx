@@ -25,7 +25,7 @@ import { toast } from "react-toastify";
 
 // Define a general PageProps type if not already defined elsewhere
 // If you have a central types file (e.g., src/types/index.ts), consider moving it there.
-type PageProps<TParams = Record<string, string>, TSearchParams = Record<string, string | string[] | undefined>> = {
+type PageProps<TParams = Record<string, any>, TSearchParams = Record<string, string | string[] | undefined>> = {
 	params: TParams;
 	searchParams?: TSearchParams;
 };
