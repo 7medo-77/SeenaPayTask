@@ -26,6 +26,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { toast } from 'react-toastify';
 
 const loginSchema = z.object({
 	email: z.string().email("Invalid email address"),
@@ -63,8 +64,10 @@ export default function LoginPage() {
 						? "Invalid email or password."
 						: "Login failed. Please try again."
 				);
+				toast.error(apiError);
 			} else if (response?.ok) {
 				console.log("Login successful");
+				toast.success("Login successful!");
 				router.push("/");
 				router.refresh();
 			} else {
