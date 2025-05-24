@@ -11,22 +11,25 @@ export default function UnauthorizedLayout({ children }: UnauthorizedLayoutProps
     <div className="relative min-h-screen flex flex-col items-center justify-center text-white font-[family-name:var(--font-geist-sans)]">
       {/* Background Image */}
       <Image
-        src={backgroundAsset} // Use the imported StaticImageData
+        src={backgroundAsset}
         alt="Blog background"
         layout="fill"
         objectFit="cover"
-        quality={75} // Reduced quality slightly for better performance, adjust as needed
-        className="-z-10" // Ensure it's behind other content
-        priority // Prioritize loading for LCP
-        placeholder="blur" // Show a blurred placeholder while loading
+        quality={75}
+        className="-z-10"
+        priority
+        placeholder="blur"
         sizes="100vw"
       />
 
       {/* Overlay for backdrop blur effect */}
       <div className="absolute inset-0 bg-black/30 backdrop-blur-md z-0"></div>
 
-      {/* Page content will be rendered here */}
       <main className="z-10 w-full flex flex-col items-center justify-center p-4 sm:p-8">
+        <h1 className="text-5xl sm:text-7xl font-bold mb-8">
+          Blog Application
+        </h1>
+
         {children}
       </main>
     </div>
