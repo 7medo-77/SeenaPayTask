@@ -64,7 +64,7 @@ export default function LoginPage() {
 						? "Invalid email or password."
 						: "Login failed. Please try again."
 				);
-				toast.error(apiError);
+				toast.error(apiError || "Login failed. Please try again.");
 			} else if (response?.ok) {
 				console.log("Login successful");
 				toast.success("Login successful!");
