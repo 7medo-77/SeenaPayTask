@@ -82,68 +82,68 @@ export default function LoginPage() {
 	};
 
 	return (
-		<div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-			<Card className="w-full max-w-sm">
-				<CardHeader>
-					<CardTitle className="text-2xl font-bold text-center">Login</CardTitle>
-					<CardDescription className="text-center">
-						Enter your credentials to access your account.
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					{apiError && (
-						<div className="mb-4 p-3 bg-red-50 text-red-700 border border-red-200 rounded-md">
-							{apiError}
-						</div>
-					)}
-					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-							<FormField
-								control={form.control}
-								name="email"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Email</FormLabel>
-										<FormControl>
-											<Input placeholder="you@example.com" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="password"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Password</FormLabel>
-										<FormControl>
-											<Input
-												type="password"
-												placeholder="••••••••"
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<Button type="submit" disabled={loading} className="w-full">
-								{loading ? "Logging in..." : "Login"}
-							</Button>
-						</form>
-					</Form>
-					<div className="mt-6 text-sm text-center">
-						Don&apos;t have an account?{" "}
-						<Link
-							href="/signup"
-							className="font-medium text-blue-600 hover:text-blue-500"
-						>
-							Sign up
-						</Link>
+
+		<Card className="w-full max-w-sm">
+			<CardHeader>
+				<CardTitle className="text-2xl font-bold text-center">Login</CardTitle>
+				<CardDescription className="text-center">
+					Enter your credentials to access your account.
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				{apiError && (
+					<div className="mb-4 p-3 bg-red-50 text-red-700 border border-red-200 rounded-md">
+						{apiError}
 					</div>
-				</CardContent>
-			</Card>
-		</div>
+				)}
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+						<FormField
+							control={form.control}
+							name="email"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Email</FormLabel>
+									<FormControl>
+										<Input placeholder="you@example.com" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="password"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Password</FormLabel>
+									<FormControl>
+										<Input
+											type="password"
+											placeholder="••••••••"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<Button type="submit" disabled={loading} className="w-full">
+							{loading ? "Logging in..." : "Login"}
+						</Button>
+					</form>
+				</Form>
+				<div className="mt-6 text-sm text-center">
+					Don&apos;t have an account?{" "}
+					<Link
+						href="/signup"
+						className="font-medium text-blue-600 hover:text-blue-500"
+					>
+						Sign up
+					</Link>
+				</div>
+			</CardContent>
+		</Card>
+
 	);
 }

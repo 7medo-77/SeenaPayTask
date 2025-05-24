@@ -74,93 +74,92 @@ export default function SignupPage() {
 	};
 
 	return (
-		<div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-			<Card className="w-full max-w-md">
-				<CardHeader>
-					<CardTitle className="text-2xl font-bold tracking-tight text-center">
-						Create your account
-					</CardTitle>
-					<CardDescription className="text-center">
-						Enter your details below to create a new account.
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					{error && (
-						<div className="mb-4 p-3 bg-red-50 text-red-700 border border-red-200 rounded-md">
-							{error}
-						</div>
-					)}
-					<form className="space-y-6" onSubmit={handleSubmit}>
-						<div className="space-y-2">
-							<Label htmlFor="name">Name</Label>
-							<Input
-								id="name"
-								name="name"
-								type="text"
-								placeholder="Your name"
-								value={formData.name}
-								onChange={handleChange}
-							/>
-						</div>
-
-						<div className="space-y-2">
-							<Label htmlFor="email">Email address</Label>
-							<Input
-								id="email"
-								name="email"
-								type="email"
-								placeholder="you@example.com"
-								required
-								value={formData.email}
-								onChange={handleChange}
-							/>
-						</div>
-
-						<div className="space-y-2">
-							<Label htmlFor="password">Password</Label>
-							<Input
-								id="password"
-								name="password"
-								type="password"
-								placeholder="••••••••"
-								required
-								value={formData.password}
-								onChange={handleChange}
-							/>
-						</div>
-
-						<div className="space-y-2">
-							<Label htmlFor="confirmPassword">Confirm Password</Label>
-							<Input
-								id="confirmPassword"
-								name="confirmPassword"
-								type="password"
-								placeholder="••••••••"
-								required
-								value={formData.confirmPassword}
-								onChange={handleChange}
-							/>
-						</div>
-
-						<Button
-							type="submit"
-							disabled={loading}
-							className="w-full"
-						>
-							{loading ? "Creating account..." : "Sign up"}
-						</Button>
-					</form>
-					<div className="mt-6 text-sm text-center">
-						Already have an account?{" "}
-						<Link
-							href="/login"
-							className="font-medium text-blue-600 hover:text-blue-500"
-						>
-							Sign in
-						</Link>
+		<Card className="w-full max-w-md">
+			<CardHeader>
+				<CardTitle className="text-2xl font-bold tracking-tight text-center">
+					Create your account
+				</CardTitle>
+				<CardDescription className="text-center">
+					Enter your details below to create a new account.
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				{error && (
+					<div className="mb-4 p-3 bg-red-50 text-red-700 border border-red-200 rounded-md">
+						{error}
 					</div>
-				</CardContent>
-			</Card>
-		</div>
+				)}
+				<form className="space-y-6" onSubmit={handleSubmit}>
+					<div className="space-y-2">
+						<Label htmlFor="name">Name</Label>
+						<Input
+							id="name"
+							name="name"
+							type="text"
+							placeholder="Your name"
+							value={formData.name}
+							onChange={handleChange}
+						/>
+					</div>
+
+					<div className="space-y-2">
+						<Label htmlFor="email">Email address</Label>
+						<Input
+							id="email"
+							name="email"
+							type="email"
+							placeholder="you@example.com"
+							required
+							value={formData.email}
+							onChange={handleChange}
+						/>
+					</div>
+
+					<div className="space-y-2">
+						<Label htmlFor="password">Password</Label>
+						<Input
+							id="password"
+							name="password"
+							type="password"
+							placeholder="••••••••"
+							required
+							value={formData.password}
+							onChange={handleChange}
+						/>
+					</div>
+
+					<div className="space-y-2">
+						<Label htmlFor="confirmPassword">Confirm Password</Label>
+						<Input
+							id="confirmPassword"
+							name="confirmPassword"
+							type="password"
+							placeholder="••••••••"
+							required
+							value={formData.confirmPassword}
+							onChange={handleChange}
+						/>
+					</div>
+
+					<Button
+						type="submit"
+						disabled={loading}
+						className="w-full"
+					>
+						{loading ? "Creating account..." : "Sign up"}
+					</Button>
+				</form>
+				<div className="mt-6 text-sm text-center">
+					Already have an account?{" "}
+					<Link
+						href="/login"
+						className="font-medium text-blue-600 hover:text-blue-500"
+					>
+						Sign in
+					</Link>
+				</div>
+			</CardContent>
+		</Card>
+
 	);
 }
