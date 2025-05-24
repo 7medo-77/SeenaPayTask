@@ -4,6 +4,10 @@
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+
+## MockAPI URL
+https://6830ac896205ab0d6c3a0441.mockapi.io/api/v1/
+
 ## Getting Started
 
 Follow these steps to set up and run the project locally:
