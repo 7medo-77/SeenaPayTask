@@ -63,7 +63,7 @@ export default function NewPostPage() {
 			setApiError(null);
 			setSubmitting(true);
 
-			const postData: Omit<Post, "id" | "createdAt" | "updatedAt"> = {
+			const postData: Omit<Post, "id"> = {
 				...values,
 				userId: "",
 			};

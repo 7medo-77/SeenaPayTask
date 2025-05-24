@@ -5,9 +5,9 @@ import PostDetail from "../../../components/post-details/post.component";
 export default async function PostDetailPage({
 	params,
 }: {
-	params: { id: string };
+	params: Promise<{ id: string }>;
 }) {
-	const { id } = params;
+	const { id } = await params;
 	const response = await getPostById(undefined, id);
 
 	if (!response.success || !response.data) {

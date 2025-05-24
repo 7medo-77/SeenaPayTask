@@ -1,8 +1,8 @@
 "use client";
 
 import { Post, getPostById, updatePost } from "@/lib/api/post";
-import { useRouter } from "next/navigation";
-import { useEffect, useState, use } from "react"; // Import use
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react"; // Import use
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,11 +22,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-toastify";
 
-// Define a specific type for this page's props
-type EditPostPageProps = {
-	params: Promise<{ id: string }>; // params is now a Promise
-	searchParams?: { [key: string]: string | string[] | undefined }; // Or more specific if you use searchParams
-};
+// // Define a specific type for this page's props
+// type EditPostPageProps = {
+// 	params: Promise<{ id: string }>; // params is now a Promise
+// 	searchParams?: { [key: string]: string | string[] | undefined }; // Or more specific if you use searchParams
+// };
 
 const editPostFormSchema = z.object({
 	title: z.string().min(1, "Title is required"),
@@ -37,10 +37,10 @@ const editPostFormSchema = z.object({
 
 type EditPostFormValues = z.infer<typeof editPostFormSchema>;
 
-export default function EditPostPage({ params: paramsPromise }: EditPostPageProps) {
-	const params = use(paramsPromise);
+export default function EditPostPage() {
+	const params = useParams();
 	const router = useRouter();
-	const { id: postId } = params;
+	const postId = params.id as string;
 
 	const [loading, setLoading] = useState(true);
 	const [submitting, setSubmitting] = useState(false);
