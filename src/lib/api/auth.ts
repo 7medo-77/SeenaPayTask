@@ -7,7 +7,7 @@ const MOCKAPI_BASE_URL = process.env.MOCKAPI_BASE_URL;
 console.log("MockAPI Base URL:", process.env.NEXT_PUBLIC_MOCKAPI_BASE_URL);
 
 // Axios instance for MockAPI
-const apiClient = axios.create({
+export const apiClient = axios.create({
 	baseURL: MOCKAPI_BASE_URL,
 	headers: {
 		"Content-Type": "application/json",
@@ -72,6 +72,7 @@ export const loginUser = async (
 
 		// remove password, in accordance with the AuthResponse interface
 		const { password, ...userWithoutPassword } = user;
+		console.log(password);
 		return { success: true, user: userWithoutPassword };
 
 	} catch (error) {
@@ -126,6 +127,7 @@ export const signupUser = async (
 		);
 
 		const { password, ...createdUserWithoutPassword } = createResponse.data;
+		console.log(password);
 		return { success: true, user: createdUserWithoutPassword };
 
 	} catch (error) {

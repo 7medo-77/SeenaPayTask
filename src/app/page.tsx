@@ -1,4 +1,4 @@
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import backgroundAsset from '@/assets/faded_gallery-OfdOEdGYiuk-unsplash.jpg';
 import getCurrentUserData from "@/utils/getCurrentUserData";

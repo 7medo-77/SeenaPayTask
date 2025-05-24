@@ -44,7 +44,7 @@ export default function NewPostPage() {
 			description: "",
 			content: "",
 		},
-		mode: "onChange", // Or "onBlur" or "onSubmit"
+		mode: "onChange",
 	});
 
 	const generateSlug = () => {
@@ -52,7 +52,7 @@ export default function NewPostPage() {
 		if (title) {
 			const slug = title
 				.toLowerCase()
-				.replace(/[^\w\s-]/gi, "") // Allow hyphens in slug
+				.replace(/[^\w\s-]/gi, "") // remove all non-word characters except spaces and hyphens
 				.replace(/\s+/g, "-");
 			form.setValue("slug", slug, { shouldValidate: true });
 		}
@@ -65,13 +65,13 @@ export default function NewPostPage() {
 
 			const postData: Omit<Post, "id" | "createdAt" | "updatedAt"> = {
 				...values,
-				userId: "", // createPost will handle fetching the current user ID
+				userId: "",
 			};
 
 			const response = await createPost(postData);
 
 			if (response.success && response.data) {
-				const newPost = response.data as Post; // Assuming response.data is a single Post
+				const newPost = response.data as Post;
 				toast.success("Post created successfully!");
 				router.push(`/posts/${newPost.id}`);
 			} else {
@@ -121,8 +121,8 @@ export default function NewPostPage() {
 										placeholder="Enter post title"
 										{...field}
 										onBlur={() => {
-											field.onBlur(); // RHF's onBlur
-											generateSlug(); // Custom onBlur
+											field.onBlur();
+											generateSlug();
 										}}
 									/>
 								</FormControl>

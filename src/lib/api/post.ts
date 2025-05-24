@@ -56,6 +56,7 @@ export const getUserPosts = async (userId?: string): Promise<PostResponse> => {
 		// 	};
 		// }
 		// return { success: false, error: "Network or server error" };
+		console.log(error);
 		return {
 			success: true,
 			data: [],
@@ -71,8 +72,6 @@ export const getPostById = async (
 	postId?: string
 ): Promise<PostResponse> => {
 	try {
-		console.log("userId: ", userId);
-		console.log("postId: ", postId);
 		if (!postId) {
 			return { success: false, error: "Post ID is required" };
 		}

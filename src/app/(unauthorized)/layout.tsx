@@ -1,4 +1,4 @@
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import backgroundAsset from '@/assets/faded_gallery-OfdOEdGYiuk-unsplash.jpg';
 import React from "react";
 import getCurrentUserData from "@/utils/getCurrentUserData";
