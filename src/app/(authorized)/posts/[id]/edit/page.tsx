@@ -2,13 +2,12 @@
 
 import { Post, getPostById, updatePost } from "@/lib/api/post";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react"; // Import use
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Loader2 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -25,7 +24,7 @@ import { toast } from "react-toastify";
 
 // Define a specific type for this page's props
 type EditPostPageProps = {
-	params: { id: string };
+	params: Promise<{ id: string }>; // params is now a Promise
 	searchParams?: { [key: string]: string | string[] | undefined }; // Or more specific if you use searchParams
 };
 
@@ -38,7 +37,8 @@ const editPostFormSchema = z.object({
 
 type EditPostFormValues = z.infer<typeof editPostFormSchema>;
 
-export default function EditPostPage({ params }: EditPostPageProps) {
+export default function EditPostPage({ params: paramsPromise }: EditPostPageProps) {
+	const params = use(paramsPromise);
 	const router = useRouter();
 	const { id: postId } = params;
 
