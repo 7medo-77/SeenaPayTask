@@ -34,7 +34,7 @@ export default async function UnauthorizedLayout({ children }: UnauthorizedLayou
       {/* Overlay for backdrop blur effect */}
       <div className="absolute inset-0 bg-black/30 backdrop-blur-md z-0"></div>
 
-      <main className="z-10 w-full flex flex-col md:flex-row items-center justify-between md:p-[4em] sm:p-8 border-b border-white/10 bg-black/50 rounded-lg shadow-lg md:max-w-5xl">
+      <main className="z-10 w-full flex flex-col md:flex-row items-center justify-between p-2 md:p-[4em] sm:p-8 border-b border-white/10 bg-black/50 rounded-lg shadow-lg md:max-w-5xl">
         <h1 className="text-4xl md:text-5xl lg:text-5xl font-bold mb-8">
           Blog Application
         </h1>
