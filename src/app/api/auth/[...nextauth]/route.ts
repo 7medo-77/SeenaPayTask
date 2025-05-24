@@ -29,10 +29,27 @@ const handler = NextAuth({
 	],
 	callbacks: {
 		async session({ session, token }) {
+			session.user = token.user as
+				| { name?: string | null; email?: string | null }
+				| undefined;
+			return session;
 		},
 		async jwt({ token, user, trigger, session }) {
+			if (trigger === "update") {
+				token.user = session.user;
+			}
+
+			if (user) {
+				token.user = user;
+			}
+			return token;
+
 		},
 		async redirect({ url }) {
+			console.log(url, "redirect pre");
+			const baseUrl = url.split("/").slice(0, 3).join("/");
+			console.log(baseUrl, "redirect post");
+			return baseUrl;
 		},
 	},
 });
