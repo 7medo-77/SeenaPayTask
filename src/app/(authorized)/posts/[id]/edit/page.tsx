@@ -23,11 +23,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-toastify";
 
-// Define a general PageProps type if not already defined elsewhere
-// If you have a central types file (e.g., src/types/index.ts), consider moving it there.
-type PageProps<TParams = Record<string, any>, TSearchParams = Record<string, string | string[] | undefined>> = {
-	params: TParams;
-	searchParams?: TSearchParams;
+// Define a specific type for this page's props
+type EditPostPageProps = {
+	params: { id: string };
+	searchParams?: { [key: string]: string | string[] | undefined }; // Or more specific if you use searchParams
 };
 
 const editPostFormSchema = z.object({
@@ -39,7 +38,7 @@ const editPostFormSchema = z.object({
 
 type EditPostFormValues = z.infer<typeof editPostFormSchema>;
 
-export default function EditPostPage({ params }: PageProps<{ id: string }>) {
+export default function EditPostPage({ params }: EditPostPageProps) {
 	const router = useRouter();
 	const { id: postId } = params;
 
