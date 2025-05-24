@@ -7,8 +7,23 @@ const handler = NextAuth({
 		CredentialsProvider({
 			name: "credentials",
 			credentials: {
+				email: { label: "Email", type: "text" },
+				password: { label: "Password", type: "password" },
 			},
 			async authorize(credentials) {
+				if (!credentials) return null;
+
+				const res = await loginUser({
+					email: credentials.email,
+					password: credentials.password,
+				});
+				console.log(res, "res");
+
+				if (res.success && res.user) {
+					return res.user;
+				} else {
+					return null;
+				}
 			},
 		}),
 	],
