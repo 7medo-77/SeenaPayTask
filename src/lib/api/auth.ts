@@ -4,7 +4,6 @@ import axios from "axios";
 // MockAPI base URL
 const MOCKAPI_BASE_URL = process.env.MOCKAPI_BASE_URL;
 
-console.log("MockAPI Base URL:", process.env.NEXT_PUBLIC_MOCKAPI_BASE_URL);
 
 // Axios instance for MockAPI
 export const apiClient = axios.create({
@@ -17,7 +16,7 @@ export const apiClient = axios.create({
 // basic ApiUser type
 export interface ApiUser {
 	id: string;
-	name: string;
+	username: string;
 	email: string;
 	password?: string;
 }
@@ -56,7 +55,6 @@ export const loginUser = async (
 	try {
 		// This approach is obviously not ideal, but is currently the best option
 		const response = await apiClient.get<ApiUser[]>("/users");
-		console.log("Fetched users:", response.data);
 
 		const users = response.data.filter(
 			(user) => user.email === credentials.email
@@ -106,25 +104,29 @@ export const signupUser = async (
 			email: userData.email,
 			password: userData.password,
 		};
-		console.log("Creating new user with payload:", newUserPayload);
-
 		// Check if the user already exists, this is a workaround for MockAPI
 		// as it does not have a built-in user registration endpoint.
 		// Adding a new user with a pre-existing email will be successful because their IDs are different
 		const response = await apiClient.get<ApiUser[]>("/users");
-		response.data.forEach((user) => {
-			if (user.email === userData.email) {
-				return {
-					success: false,
-					error: "User with this email already exists.",
-				};
-			}
-		});
+		const resultUser = response.data.find(
+			(user) => user.email === userData.email || user.username === userData.username
+		);
+
+		if (resultUser) {
+			return {
+				success: false,
+				error: "User with this email/username already exists.",
+			};
+		}
 
 		const createResponse = await apiClient.post<ApiUser>(
 			"/users",
 			newUserPayload
 		);
+
+		if (!createResponse.data) {
+			throw new Error("User creation failed");
+		}
 
 		const { password, ...createdUserWithoutPassword } = createResponse.data;
 		console.log(password);
