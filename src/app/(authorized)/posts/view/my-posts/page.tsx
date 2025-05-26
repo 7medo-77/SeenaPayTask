@@ -1,6 +1,6 @@
 import getCurrentUserData from "@/utils/getCurrentUserData";
 import { getUserPosts, Post } from "@/lib/api/cachedPost";
-import PostGridComponent from "@/app/components/authorized/posts/grid/post-grid.component";
+import PostGridComponent from "@/app/components/shared/post-grid/post-grid.component";
 
 export default async function MyPostsPage() {
   const currentUser = await getCurrentUserData();
