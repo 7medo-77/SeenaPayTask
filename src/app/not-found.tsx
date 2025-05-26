@@ -10,26 +10,19 @@ export default function NotFound() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '80vh', // Use most of the viewport height
+        minHeight: '80vh',
         padding: '2rem',
-        backgroundColor: '#f8d7da', // Light destructive red/pink
-        color: '#721c24', // Dark destructive red for text
+        backgroundColor: '#f8d7da',
+        color: '#721c24',
         textAlign: 'center',
       }}
     >
-      {/*
-        Replace with your chosen unDraw SVG or image.
-        For example, from https://undraw.co/search, search for "404" or "page not found".
-        Download the SVG, place it in your /public folder (e.g., /public/undraw_page_not_found.svg)
-        and use <Image src="/undraw_page_not_found.svg" alt="Page Not Found Illustration" width={300} height={300} />
-        For now, using a placeholder:
-      */}
       <Image
         src={notFoundImage}
         alt="Page Not Found Illustration"
         width={300}
         height={250}
-        style={{ marginBottom: '2rem' }} // maxWidth can be handled by parent or specific styling if needed
+        style={{ marginBottom: '2rem' }}
       />
       <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: '#721c24' }}>
         404 - Page Not Found
@@ -42,15 +35,13 @@ export default function NotFound() {
         style={{
           display: 'inline-block',
           padding: '0.75rem 1.5rem',
-          backgroundColor: '#dc3545', // Destructive red
+          backgroundColor: '#dc3545',
           color: 'white',
           textDecoration: 'none',
-          borderRadius: '0.375rem', // Equivalent to Tailwind's rounded-md
+          borderRadius: '0.375rem',
           fontWeight: 'bold',
           transition: 'background-color 0.2s ease-in-out',
         }}
-        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#c82333')}
-        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#dc3545')}
       >
         Go to Homepage
       </Link>
