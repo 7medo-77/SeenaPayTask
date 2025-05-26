@@ -17,7 +17,6 @@ const handler = NextAuth({
 					email: credentials.email,
 					password: credentials.password,
 				});
-				console.log(res, "res");
 
 				if (res.success && res.user) {
 					return res.user;
@@ -46,9 +45,7 @@ const handler = NextAuth({
 
 		},
 		async redirect({ url }) {
-			console.log(url, "redirect pre");
 			const baseUrl = url.split("/").slice(0, 3).join("/");
-			console.log(baseUrl, "redirect post");
 			return baseUrl;
 		},
 	},

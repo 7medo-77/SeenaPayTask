@@ -18,7 +18,7 @@ export default async function UnauthorizedLayout({ children }: UnauthorizedLayou
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center text-white font-[family-name:var(--font-geist-sans)]">
-      {/* Background Image */}
+      {/* background image */}
       <Image
         src={backgroundAsset}
         alt="Blog background"
@@ -31,7 +31,7 @@ export default async function UnauthorizedLayout({ children }: UnauthorizedLayou
         sizes="100vw"
       />
 
-      {/* Overlay for backdrop blur effect */}
+      {/* overlay for blur effect */}
       <div className="absolute inset-0 bg-black/30 backdrop-blur-md z-0"></div>
 
       <main className="z-10 w-full flex flex-col md:flex-row items-center justify-between p-2 md:p-[4em] sm:p-8 border-b border-white/10 bg-black/50 rounded-lg shadow-lg md:max-w-5xl">
