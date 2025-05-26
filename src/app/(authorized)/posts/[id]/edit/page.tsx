@@ -1,32 +1,16 @@
 "use client";
 
-import { Post, getPostById, updatePost } from "@/lib/api/post";
+import { Post, getPostById, updatePost } from "@/lib/api/cachedPost";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react"; // Import use
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-toastify";
-
-// // Define a specific type for this page's props
-// type EditPostPageProps = {
-// 	params: Promise<{ id: string }>; // params is now a Promise
-// 	searchParams?: { [key: string]: string | string[] | undefined }; // Or more specific if you use searchParams
-// };
+import { useSession } from "next-auth/react";
+import EditPostFormComponent from "@/app/components/authorized/posts/edit/edit-post.component";
 
 const editPostFormSchema = z.object({
 	title: z.string().min(1, "Title is required"),
@@ -41,6 +25,8 @@ export default function EditPostPage() {
 	const params = useParams();
 	const router = useRouter();
 	const postId = params.id as string;
+	const { data: sessionObject } = useSession();
+	const userId = sessionObject?.user?.id;
 
 	const [loading, setLoading] = useState(true);
 	const [submitting, setSubmitting] = useState(false);
@@ -60,13 +46,42 @@ export default function EditPostPage() {
 
 	useEffect(() => {
 		async function fetchPost() {
+			if (!sessionObject || !userId) {
+				if (sessionObject === null) {
+					setApiError("User not authenticated");
+					toast.error("User not authenticated. Redirecting...");
+					router.push("/auth/signin");
+					setLoading(false);
+					return;
+				}
+				if (!userId && sessionObject) {
+					setApiError("User ID not found in session");
+					toast.error("User ID not found in session. Redirecting...");
+					router.push("/auth/signin");
+					setLoading(false);
+					return;
+				}
+				if (sessionObject === undefined) {
+					return;
+				}
+			}
+
 			try {
 				setLoading(true);
 				setApiError(null);
 				const response = await getPostById(undefined, postId);
 
+				if (response?.data && (response.data as Post).userId !== userId) {
+					setApiError("You do not have permission to edit this post");
+					toast.error("You do not have permission to edit this post, redirecting...");
+					router.push(`/posts/${postId}`);
+					setLoading(false);
+					return;
+				}
+
 				if (!response.success || !response.data) {
 					setApiError(response.error || "Failed to load post");
+					setLoading(false);
 					return;
 				}
 				const postData = response.data as Post;
@@ -85,10 +100,10 @@ export default function EditPostPage() {
 			}
 		}
 
-		if (postId) {
+		if (postId && sessionObject !== undefined) {
 			fetchPost();
 		}
-	}, [postId, form]);
+	}, [postId, form, sessionObject, userId, router]);
 
 	const onSubmit = async (values: EditPostFormValues) => {
 		try {
@@ -130,102 +145,21 @@ export default function EditPostPage() {
 
 			<h1 className="text-3xl font-bold mb-6">Edit Post</h1>
 
-			{apiError && (
-				<div className="p-3 mb-4 bg-red-50 text-red-700 border border-red-200 rounded-md">
-					{apiError}
-				</div>
-			)}
-
 			{loading ? (
 				<div className="flex flex-col justify-center items-center py-8 h-96">
 					<Loader2 className="h-20 w-20 animate-spin text-blue-600" />
 				</div>
+			) : apiError ? (
+				<div className="p-3 mb-4 bg-red-50 text-red-700 border border-red-200 rounded-md">
+					{apiError}
+				</div>
 			) : (
-				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="space-y-6 bg-white p-6 rounded-lg shadow-sm"
-					>
-						<FormField
-							control={form.control}
-							name="title"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Title</FormLabel>
-									<FormControl>
-										<Input placeholder="Enter post title" {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-
-						<FormField
-							control={form.control}
-							name="slug"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Slug</FormLabel>
-									<FormControl>
-										<Input placeholder="post-slug" {...field} />
-									</FormControl>
-									<FormDescription>
-										Used for URL: /posts/your-slug
-									</FormDescription>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-
-						<FormField
-							control={form.control}
-							name="description"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Description</FormLabel>
-									<FormControl>
-										<Textarea
-											placeholder="Short description of the post"
-											rows={2}
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-
-						<FormField
-							control={form.control}
-							name="content"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Content</FormLabel>
-									<FormControl>
-										<Textarea
-											placeholder="Write your post content here..."
-											rows={8}
-											{...field}
-										/>
-									</FormControl>
-									<FormDescription>
-										Use line breaks to separate paragraphs.
-									</FormDescription>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-
-						<div className="flex justify-end space-x-4">
-							<Button type="button" variant="outline" asChild>
-								<Link href={`/posts/${postId}`}>Cancel</Link>
-							</Button>
-							<Button type="submit" disabled={submitting}>
-								{submitting ? "Saving..." : "Save Changes"}
-							</Button>
-						</div>
-					</form>
-				</Form>
+				<EditPostFormComponent
+					form={form}
+					onFormSubmit={form.handleSubmit(onSubmit)}
+					submitting={submitting}
+					postId={postId}
+				/>
 			)}
 		</div>
 	);
