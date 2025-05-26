@@ -2,6 +2,26 @@
 
 **Important Note about MockAPI:** Because the free account for MockAPI does not support creating endpoints, the MockAPI used in this project has certain limitations. Specifically, it does not support `POST` requests for `/login` and `/signup` routes. Additionally, there is no slug-based endpoint available for fetching individual posts (e.g., `/posts/:slug`). All post data is fetched from the `/posts` endpoint.
 
+## Addressed Feedback
+
+Based on the concise and insightful feedback from the development team, the following areas for improvement have been addressed:
+
+*   **Duplicate User Registration:**
+    *   The system permits multiple users to register with the same email and username, leading to potential data integrity issues.
+    *   **Fix:** Modification of the `signUpUser` server action by replacing faulty email and username check with working code.
+
+*   **Inconsistent Form Validation:**
+    *   The validation rules for the sign-up and login forms are inconsistent, potentially causing user confusion.
+    *   **Fix:** Zod validation schema is now shared between the sign-up and login forms, with the sign-up schema extending the login schema.
+
+*   **Limited Content Visibility:**
+    *   Currently, users can only view their own posts, which contradicts common expectations for a blogging platform where content is typically shared and discoverable by others.
+    *   **Fix:** New `getAllPosts` server action introduced consuming the `/posts/` endpoint to retrieve all posts for a user to view. The `/posts` page has been overhauled to accommodate two different views: "All posts" and "My posts". A search by post title feature has also been added for each view.
+
+*   **Absence of Error Handling Mechanisms:**
+    *   The application lacks comprehensive error handling for network requests and form submissions, which may lead to uninformative user feedback during failures.
+    *   **Fix:** Validation messages, toasters, and helpful error messages returned by server actions now facilitate comprehensive error handling.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 
