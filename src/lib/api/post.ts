@@ -1,7 +1,7 @@
 "use server";
 import axios from "axios";
 import getCurrentUserData from "@/utils/getCurrentUserData";
-import { apiClient } from "@/lib/api/auth";
+import { apiClient, ApiUser } from "@/lib/api/auth";
 
 // MockAPI base URL
 const MOCKAPI_BASE_URL = process.env.MOCKAPI_BASE_URL;
@@ -14,6 +14,7 @@ export interface Post {
 	description: string;
 	content: string;
 	userId: string;
+	user?: ApiUser;
 	createdAt?: string;
 	updatedAt?: string;
 }
@@ -65,6 +66,27 @@ export const getUserPosts = async (userId?: string): Promise<PostResponse> => {
 };
 
 /**
+ * Get all posts from the mock API
+ * Return: PostResponse object containing success status, posts data, or error message.
+ */
+export const getAllPosts = async (): Promise<PostResponse> => {
+	try {
+		// Fetch all posts from the mock API
+		const response = await apiClient.get<Post[]>("/posts");
+		return { success: true, data: response.data };
+	} catch (error) {
+		console.error("Get all posts error:", error);
+		if (axios.isAxiosError(error) && error.response) {
+			return {
+				success: false,
+				error: error.response.data.message || "Failed to fetch posts",
+			};
+		}
+		return { success: false, error: "Network or server error" };
+	}
+};
+
+/**
  * Get a specific post by ID
  */
 export const getPostById = async (
@@ -76,18 +98,27 @@ export const getPostById = async (
 			return { success: false, error: "Post ID is required" };
 		}
 
-		// If userId is not provided, try to get the current user (from session)
-		if (!userId) {
-			const currentUser = await getCurrentUserData();
-			if (!currentUser?.id) {
-				return { success: false, error: "User not authenticated" };
-			}
-			userId = currentUser.id;
-		}
+		// // If userId is not provided, try to get the current user (from session)
+		// if (!userId) {
+		// 	const currentUser = await getCurrentUserData();
+		// 	if (!currentUser?.id) {
+		// 		return { success: false, error: "User not authenticated" };
+		// 	}
+		// 	userId = currentUser.id;
+		// }
+
+		// const response = await apiClient.get<Post>(
+		// 	`/users/${userId}/posts/${postId}`
+		// );
 
 		const response = await apiClient.get<Post>(
-			`/users/${userId}/posts/${postId}`
+			`/posts/${postId}`
 		);
+		const userData = await apiClient.get<ApiUser>(`/users/${response.data.userId}`);
+		const { password, ...rest } = userData.data;
+		response.data.user = rest; // Attach user data to the post
+
+
 		return { success: true, data: response.data };
 	} catch (error) {
 		console.error("Get post error:", error);
