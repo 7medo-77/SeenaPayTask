@@ -4,7 +4,6 @@ import { ApiUser } from "@/lib/api/auth";
 
 // MockAPI base URL
 const MOCKAPI_BASE_URL = process.env.MOCKAPI_BASE_URL;
-console.log("MockAPI Base URL:", MOCKAPI_BASE_URL);
 
 export interface Post {
 	id?: string;
